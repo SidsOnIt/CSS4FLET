@@ -1,0 +1,109 @@
+import flet as ft
+
+def global_theme():
+    return {
+        "padding": 10,
+        "border_radius": 8,
+        "font_family": "Roboto",
+        "label_style": ft.TextStyle(weight='bold',color='red',font_family='Arial')
+    }
+
+def mode_themes():
+    return {
+        'light': {
+            "label_style": ft.TextStyle(weight='bold',color='green',font_family="Times New Roman"),
+            'bgcolor': '#ffffff',
+            'color': '#000000',
+            'border_radius': 10,
+            'font_family': 'Roboto',
+            'size': 16,
+            'opacity': 1.0,
+            'width': 300,
+            'height': 80,
+            'border': ft.border.all(2, '#000000'),
+            'alignment': ft.alignment.center,
+            'scale': 1.0,
+            'offset': ft.transform.Offset(0, 0),
+            'animate_opacity': 300,
+            'shadow': ft.BoxShadow(
+                spread_radius=1,
+                blur_radius=10,
+                color=ft.colors.BLUE_GREY_100,
+            ),
+        },
+        'dark': {
+            "label_style": ft.TextStyle(weight='bold',color='blue',font_family='Arial'),
+            'bgcolor': '#2c2c2c',
+            'color': '#ffffff',
+            'border_radius': 20,
+            'font_family': 'Times New Roman',
+            'size': 18,
+            'opacity': 0.9,
+            'width': 320,
+            'height': 90,
+            'border': ft.border.all(2, '#ffffff'),
+            'alignment': ft.alignment.center,
+            'scale': 1.1,
+            'offset': ft.transform.Offset(0, 0),
+            'animate_opacity': 300,
+            'shadow': ft.BoxShadow(
+                spread_radius=2,
+                blur_radius=15,
+                color=ft.colors.BLUE_GREY_900,
+            ),
+        },
+        'purp': {
+            "label_style": ft.TextStyle(weight='bold',color='pink',font_family='Comic Sans MS'),
+            'bgcolor': 'purple',
+            'color': '#ffffff',
+            'border_radius': 20,
+            'font_family': 'Helvetica',
+            'size': 18,
+            'opacity': 0.9,
+            'width': 320,
+            'height': 90,
+            'border': ft.border.all(2, '#ffffff'),
+            'alignment': ft.alignment.center,
+            'scale': 1.1,
+            'offset': ft.transform.Offset(0, 0),
+            'animate_opacity': 300,
+            'shadow': ft.BoxShadow(
+                spread_radius=2,
+                blur_radius=15,
+                color=ft.colors.BLUE_GREY_900,
+            ),
+        }
+    }
+
+def group_themes():
+    return {
+        'button': {
+            'color': '#ffffff',
+            'border_radius': 50,
+        },
+        'input': {
+            'bgcolor': 'black',
+            'border_radius': 5,
+            'border': ft.border.all(1, '#cccccc'),
+        },
+        'card': {
+            'bgcolor': 'black',
+            'border_radius': 15,
+            'shadow': ft.BoxShadow(
+                spread_radius=1,
+                blur_radius=10,
+                color=ft.colors.BLUE_GREY_200,
+            ),
+        },
+        'interactive': {
+            'scale': 1.05,
+            'rotate': 5.0,
+        }
+    }
+
+def get_theme():
+    return [
+        global_theme(),
+        mode_themes(),
+        group_themes()
+    ]
