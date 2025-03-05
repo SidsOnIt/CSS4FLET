@@ -1,35 +1,237 @@
-Flet Theme Manager
+# ThemeManager Class Manual
 
-A dynamic styling library for Flet, the Python UI framework. ThemeManager adds live theme switching, group styling, and concurrent updates to Flet, making it easy to manage complex UIs without manual widget tweaking.
+## Overview
 
-Live Updates: Instantly apply themes or style changes across all widgets.
-Concurrent Processing: Uses ThreadPoolExecutor for fast, parallel updates.
-Flexible Theming: Supports global themes, mode themes (e.g., light/dark), and group styles.
-Error Handling: Gracefully handles widget quirks with logging.
-Installation
+The ThemeManager is a powerful theme management class for Flet applications, allowing dynamic styling and theming across your entire application with support for global themes, mode-based themes, and group-based styling.
 
-Ensure Flet is installed: pip install flet
-Copy theme_manager.py from this repo into your project directory.
-Import and use it in your Flet app: from theme_manager import ThemeManager import flet as ft
-Tagging Widgets for Updates
+## Key Features
 
-To apply styles with ThemeManager, tag your Flet controls using the data attribute with class or group keys. These tags determine which widgets get styled when you update themes or groups.
+- Global theme application
+- Multiple mode themes (light, dark, custom)
+- Group-based styling
+- Dynamic theme toggling
+- Concurrent theme application
+- Logging and error handling
 
-Use "class" to tag widgets for global style updates: ft.TextField(data={"class": "input"}) ft.ElevatedButton("Click", data={"class": "button"})
-Use "group" to tag widgets for group-specific style updates: ft.TextField(data={"group": "input"}) ft.ElevatedButton("Click", data={"group": "button"})
-Attach to multiple groups by listing them in "group" as a list or string: ft.TextField(data={"group": ["input", "interactive"]}) ft.ElevatedButton("Click", data={"group": "button interactive"})
-Combine class and multiple groups for flexibility: ft.TextField(data={"class": "input", "group": ["input", "interactive"]}) ft.ElevatedButton("Click", data={"class": "button", "group": "button interactive"})
-How It Works
+## Installation and Setup
 
-ThemeManager traverses the control tree and applies styles to widgets based on their data tags.
-"class" tags match global style updates (e.g., tm.update_style("bgcolor", "blue")).
-"group" tags match group style updates (e.g., tm.update_group_style("button", "border_radius", 10)).
-Widgets with multiple groups (e.g., "input interactive") receive styles from all matching groups.
-Styles like bgcolor, border_radius, or shadow are applied only to tagged widgets with matching properties.
-Notes
+### Prerequisites
+- Python 3.7+
+- Flet library
+- Logging module
 
-Performance: Optimized with caching (lru_cache) and threading.
-Setup: Not a pip package—manually add theme_manager.py to your project.
+### Importing the Class
+```python
+from theme_manager import ThemeManager
+import flet as ft
+```
+
+## Initialization
+
+```python
+def main(page: ft.Page):
+    theme_manager = ThemeManager(page)
+```
+
+## Theme Configuration Methods
+
+### 1. Global Theme
+Sets a base theme applied to all controls:
+```python
+global_theme = {
+    "padding": 10,
+    "border_radius": 8,
+    "font_family": "Roboto"
+}
+theme_manager.set_global_theme(global_theme)
+```
+
+### 2. Mode Themes
+Define multiple themes that can be toggled:
+```python
+mode_themes = {
+    'light': {
+        'bgcolor': '#ffffff',
+        'color': '#000000'
+    },
+    'dark': {
+        'bgcolor': '#2c2c2c',
+        'color': '#ffffff'
+    }
+}
+theme_manager.load_mode_themes(mode_themes)
+```
+
+### 3. Group Themes
+Apply styles to specific control groups:
+```python
+group_themes = {
+    'button': {
+        'color': '#ffffff',
+        'border_radius': 50
+    },
+    'input': {
+        'bgcolor': 'black',
+        'border_radius': 5
+    }
+}
+theme_manager.load_group_themes(group_themes)
+```
+
+## Core Methods
+
+### Applying Themes
+
+1. **Apply a Specific Theme**
+```python
+theme_manager.apply_theme('dark')  # Apply dark mode theme
+```
+
+2. **Toggle Between Themes**
+```python
+theme_manager.toggle_theme()  # Cycle through available themes
+```
+
+3. **Update Global Style**
+```python
+theme_manager.update_style('color', '#ff0000')  # Change color globally
+```
+
+### Group Theme Management
+
+1. **Update Group Style**
+```python
+theme_manager.update_group_style('button', 'color', '#00ff00')
+```
+
+2. **Toggle Group**
+```python
+theme_manager.toggle_group('interactive')  # Enable/disable group styling
+```
+
+## Complete Loading Example
+
+```python
+def main(page: ft.Page):
+    theme_manager = ThemeManager(page)
+    
+    # Load themes from your theme configuration
+    theme_manager.loader(
+        global_theme=global_theme(),
+        mode_themes=mode_themes(),
+        group_themes=group_themes(),
+        initial_theme='dark'
+    )
+```
+
+## Control Styling
+
+To apply styles to controls, use the `data` attribute:
+
+```python
+button = ft.ElevatedButton(
+    "Click Me", 
+    data={'class': ['button', 'interactive']}
+)
+```
+
+## Advanced Features
+
+- Concurrent theme application
+- Automatic style validation
+- Flexible group and mode theming
+- Logging for theme-related operations
+
+## Performance Considerations
+
+- Uses a thread pool for efficient theme application
+- Supports up to 32 concurrent theme updates
+- Minimizes UI blocking during theme changes
+
+## Error Handling
+
+- Logs warnings for invalid theme configurations
+- Gracefully handles theme application errors
+- Provides fallback mechanisms
+
+## Limitations
+
+- Requires manual configuration of control classes
+- Some complex styling might require custom implementation
+- Performance may vary with large numbers of controls
+
+## Best Practices
+
+1. Define themes in separate configuration files
+2. Use consistent naming for style classes
+3. Validate themes before loading
+4. Handle potential theme application errors
+
+## Cleanup
+
+Always call cleanup when no longer needed:
+```python
+theme_manager.cleanup()
+```
+
+## Compatibility
+
+- Compatible with Flet 0.8.0+
+- Works with most Flet control types
+- Supports dynamic theme updates
+
+## Troubleshooting
+
+- Ensure controls have `data` attribute for group/class styling
+- Check logging output for theme application errors
+- Verify theme dictionaries match expected structure
+
+## License and Contribution
+
+[Include your project's license and contribution guidelines]
+```
+
+## Example Theme Configuration File
+```python
+# themes.py
+import flet as ft
+
+def global_theme():
+    return {
+        "padding": 10,
+        "border_radius": 8,
+        "font_family": "Roboto"
+    }
+
+def mode_themes():
+    return {
+        'light': {...},
+        'dark': {...}
+    }
+
+def group_themes():
+    return {
+        'button': {...},
+        'input': {...}
+    }
+
+def get_theme():
+    return [
+        global_theme(),
+        mode_themes(),
+        group_themes()
+    ]
+```
+
+## Version History
+
+- v1.0.0: Initial release
+- v1.1.0: Added group theme toggling
+- v1.2.0: Improved concurrent theme application
+
+## Contributing
+
+Contributions are welcome! Please submit pull requests or file issues on the project repository.
 
 Maintenance
 
